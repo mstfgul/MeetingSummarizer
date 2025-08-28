@@ -126,6 +126,7 @@ def summarize():
         meeting_text = data.get('meeting_text')
         meeting_title = data.get('meeting_title', '').strip()
         meeting_date = data.get('meeting_date', '')
+        language = data.get('language', 'en-US')
         
         if not api_key:
             return jsonify({'error': 'API key required. Please define OPENAI_API_KEY in .env file or enter in interface.'}), 400
@@ -174,7 +175,7 @@ def summarize():
             meeting = Meeting(
                 title=meeting_title or generated_title or 'Untitled Meeting',
                 date=meeting_date_obj,
-                language='en-US',  # Default to English for now - can be updated later from frontend
+                language=language,
                 transcript=meeting_text,
                 summary=summary
             )

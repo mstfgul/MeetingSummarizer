@@ -58,6 +58,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
         recognition.onstart = function() {
             isRecording = true;
+            finalTranscript = ''; // Clear previous transcript
             startRecordingBtn.disabled = true;
             stopRecordingBtn.disabled = false;
             startRecordingBtn.classList.add('recording');
@@ -119,6 +120,8 @@ document.addEventListener('DOMContentLoaded', function() {
     function startRecording() {
         if (recognition && !isRecording) {
             recognition.lang = languageSelect.value;
+            // Clear textarea when starting new recording
+            meetingTextArea.value = '';
             recognition.start();
         }
     }
@@ -154,6 +157,12 @@ document.addEventListener('DOMContentLoaded', function() {
             stopRecording();
         }
         meetingTextArea.value = '';
+        // Reset finalTranscript if speech recognition is initialized
+        if (recognition) {
+            // We need to access finalTranscript from the recognition scope
+            // Let's reinitialize speech recognition to clear the transcript
+            initSpeechRecognition();
+        }
         hideMessages();
     });
 
@@ -218,6 +227,11 @@ document.addEventListener('DOMContentLoaded', function() {
                 meetingTitleInput.value = meeting.title;
                 meetingDateInput.value = meeting.date;
                 meetingTextArea.value = meeting.transcript;
+                
+                // Set language if available
+                if (meeting.language) {
+                    languageSelect.value = meeting.language;
+                }
                 
                 // Show summary if exists
                 if (meeting.summary) {
@@ -339,7 +353,8 @@ document.addEventListener('DOMContentLoaded', function() {
                     api_key: apiKey,
                     meeting_text: meetingText,
                     meeting_title: meetingTitleInput.value.trim(),
-                    meeting_date: meetingDateInput.value
+                    meeting_date: meetingDateInput.value,
+                    language: languageSelect.value
                 })
             });
 
