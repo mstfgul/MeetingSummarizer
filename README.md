@@ -1,9 +1,3 @@
----
-noteId: "44b7d6c0840f11f0a326b9108f840247"
-tags: []
-
----
-
 # 🤖 Meeting Summarizer
 
 A very simple, locally running meeting summarization application. You can instantly summarize your meeting notes with OpenAI API and perform real-time transcription with **voice recording**.
