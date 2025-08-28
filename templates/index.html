@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Meeting Summarizer</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <div class="app-container">
+        <!-- Sidebar for saved meetings -->
+        <aside class="sidebar" id="sidebar">
+            <div class="sidebar-header">
+                <h3>📋 Saved Meetings</h3>
+                <button id="toggle-sidebar" class="toggle-btn">←</button>
+            </div>
+            
+            <div class="search-section">
+                <input type="text" id="search-meetings" placeholder="Search meetings..." class="search-input">
+                <button id="refresh-meetings" class="refresh-btn">🔄</button>
+            </div>
+            
+            <div class="meetings-list" id="meetings-list">
+                <div class="loading-meetings">Loading meetings...</div>
+            </div>
+        </aside>
+
+        <!-- Main content -->
+        <div class="main-content">
+            <header>
+                <h1>🤖 Meeting Summarizer</h1>
+                <p>Type, record with voice, or paste your meeting notes - summarize with AI</p>
+            </header>
+
+            <main>
+            <div class="form-container">
+                <div class="form-row">
+                    <div class="input-group">
+                        <label for="meeting-title">Meeting Title:</label>
+                        <input type="text" id="meeting-title" placeholder="Will be generated automatically...">
+                        <small>Leave empty for AI to generate automatically</small>
+                    </div>
+                    <div class="input-group">
+                        <label for="meeting-date">Date:</label>
+                        <input type="date" id="meeting-date">
+                        <small>Today's date loaded automatically</small>
+                    </div>
+                </div>
+
+                <div class="input-group">
+                    <label for="api-key">OpenAI API Key (Optional):</label>
+                    <input type="password" id="api-key" placeholder="sk-... (or define in .env file)">
+                    <small>No need to enter if your API key is defined in .env file</small>
+                </div>
+
+                <div class="input-group">
+                    <label for="meeting-text">Meeting Text:</label>
+                    <div class="speech-controls">
+                        <select id="language-select" class="language-select">
+                            <option value="en-US">🇺🇸 English (US)</option>
+                            <option value="tr-TR">🇹🇷 Türkçe</option>
+                            <option value="en-GB">🇬🇧 English (UK)</option>
+                            <option value="de-DE">🇩🇪 Deutsch</option>
+                            <option value="fr-FR">🇫🇷 Français</option>
+                            <option value="es-ES">🇪🇸 Español</option>
+                            <option value="it-IT">🇮🇹 Italiano</option>
+                            <option value="pt-BR">🇧🇷 Português</option>
+                            <option value="ru-RU">🇷🇺 Русский</option>
+                            <option value="ja-JP">🇯🇵 日本語</option>
+                            <option value="zh-CN">🇨🇳 中文</option>
+                            <option value="ar-SA">🇸🇦 العربية</option>
+                        </select>
+                        <button id="start-recording" type="button" class="speech-btn">
+                            🎤 Start Recording
+                        </button>
+                        <button id="stop-recording" type="button" class="speech-btn" disabled>
+                            ⏹️ Stop
+                        </button>
+                        <button id="clear-text" type="button" class="speech-btn">
+                            🗑️ Clear
+                        </button>
+                        <div id="speech-status" class="speech-status"></div>
+                    </div>
+                    <textarea id="meeting-text" placeholder="Type your meeting notes, record with microphone, or paste..." rows="12"></textarea>
+                    <div id="speech-support-warning" class="warning" style="display: none;">
+                        ⚠️ Your browser doesn't support speech recognition. We recommend using Chrome or Edge.
+                    </div>
+                </div>
+
+                <button id="summarize-btn" class="summarize-btn">
+                    <span class="btn-text">Summarize</span>
+                    <span class="loading" style="display: none;">⏳ Processing...</span>
+                </button>
+            </div>
+
+            <div class="result-container" id="result-container" style="display: none;">
+                <h3>📋 Meeting Summary</h3>
+                <div id="summary-result"></div>
+                <button id="copy-btn" class="copy-btn">📋 Copy</button>
+                <button id="save-btn" class="save-btn">💾 Save as Text</button>
+            </div>
+
+            <div class="error-container" id="error-container" style="display: none;">
+                <h3>❌ Error</h3>
+                <div id="error-message"></div>
+            </div>
+            
+            <footer>
+                <p>Powered by OpenAI GPT + Web Speech API • Runs locally, your data is secure</p>
+            </footer>
+            </main>
+        </div>
+    </div>
+
+    <script src="{{ url_for('static', filename='script.js') }}"></script>
+</body>
+</html>
